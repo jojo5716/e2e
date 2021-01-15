@@ -1,0 +1,25 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jojo5716/e2e.git"
+  },
+  "keywords": [
+    "2e2"
+  ],
+  "author": "Jonathan Rodriguez Alejos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jojo5716/e2e/issues"
+  },
+  "homepage": "https://github.com/jojo5716/e2e#readme",
+  "dependencies": {
+    "cypress": "^6.2.1"
+  }
+}
