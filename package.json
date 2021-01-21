@@ -20,6 +20,10 @@
   },
   "homepage": "https://github.com/jojo5716/e2e#readme",
   "dependencies": {
-    "cypress": "^6.2.1"
+    "cypress": "6.2.1",
+    "cypress-cucumber-preprocessor": "^4.0.0"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
   }
 }
