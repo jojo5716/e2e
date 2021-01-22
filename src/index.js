@@ -1,39 +1,35 @@
-const cypress = require('cypress');
-const path = require('path');
+#!/usr/bin/env/node
+const childProcess = require('child_process');
+
+const configFile = '../' + (process.env.CONFIG_FILE || 'protactor') + '.conf.js';
+const config = require(configFile).config;
 
 
-const CYPRESS_TEST_FILES_PATH = './cypress/definitions';
+const NODE_COMMAND = 'node';
+const CUCUMBER_BASE_COMMAND = './node_modules/.bin/cucumber-js';
+const STEP_DEFINITIONS = './src/step-definitions';
 
-const definitionsFolder = path.join(__dirname, '../', CYPRESS_TEST_FILES_PATH);
-
-console.log(`definitionsFolder: ${definitionsFolder}`);
-console.log('-----------');
-
-module.exports = ({
-    context: projectIntegrationFolder,
+module.exports = async ({
+    projectPath
 }) => {
-    console.log(`projectIntegrationFolder: ${projectIntegrationFolder}`);
-    const settingConfig = {
-        configFile: false,
-        pluginsFile: '',
-        config: {
-            baseUrl: 'http://localhost:8080',
-            testFiles: '**/*.{feature,features}',
-            ignoreTestFiles: ['*.js', '*.md'],
-            viewportWidth: 1360,
-            viewportHeight: 790,
-            integrationFolder: projectIntegrationFolder,
-        },
-        stepDefinitions: definitionsFolder,
-        // browser: 'chrome',
-    };
+    const commandArgs = [CUCUMBER_BASE_COMMAND, '--require', projectPath, STEP_DEFINITIONS];
+    const commandInstance = childProcess.spawn(NODE_COMMAND, commandArgs);
 
-    cypress.run(settingConfig)
-        .then((results) => {
-            console.log(`Finish.`)
-            // console.log(results)
-        })
-        .catch((err) => {
-            console.error(err)
-        });
-};
+    commandInstance.stdout.on("data", data => {
+        console.log(`stdout: ${data}`);
+    });
+
+    commandInstance.stderr.on("data", data => {
+        console.log(data);
+        console.log(`stderr: ${data}`);
+    });
+
+    commandInstance.on('error', (error) => {
+        console.log(error);
+        console.log(`error: ${error.message}`);
+    });
+
+    commandInstance.on("close", code => {
+        console.log(`child process exited with code ${code}`);
+    });
+}
