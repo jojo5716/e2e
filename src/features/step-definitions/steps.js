@@ -5,9 +5,10 @@ const {
 } = require('cucumber');
 
 const webdriver = require('selenium-webdriver');
-const browser = new webdriver.Builder()
-  .withCapabilities({'browserName': 'chrome' })
-  .build();
+
+let browser = new webdriver.Builder()
+    .forBrowser('chrome')
+    .build();
 
 Given(/^I am on the (\w+) page$/, (page) => {
     browser.url(`https://the-internet.herokuapp.com/${page}`);
